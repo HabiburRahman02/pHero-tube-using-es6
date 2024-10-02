@@ -24,21 +24,34 @@ const loadVideos = () => {
 const displayVideos = (videos) => {
     const videoContainer = document.getElementById('video-container');
     videos.forEach(video => {
+        console.log('video', video.authors[0].verified)
         const div = document.createElement('div');
         div.innerHTML = `
-        <div class="card card-compact bg-base-100shadow-xl">
+        <div class="card card-compact shadow-xl">
          <figure>
             <img
             src="${video.thumbnail}"
+            class="h-[230px] w-full object-cover"
             alt="Shoes" />
         </figure>
         <div class="card-body">
-            <h2 class="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-            <div class="card-actions justify-end">
-            <button class="btn btn-primary">Buy Now</button>
+                <div class="flex gap-4">
+                <img
+                class="h-12 w-12 rounded-full"
+                 src="${video.authors[0].profile_picture}" alt="">
+                <div class="space-y-3">
+                        <h4 class="font-bold text-xl">${video.title}</h4>
+                        <div class="flex gap-3">
+                            <p class="text-gray-500">${video.authors[0].profile_name}</p>
+                           ${video.authors[0].verified == true && `<img
+                            class="h-5 w-5"
+                            src="https://img.icons8.com/?size=48&id=D9RtvkuOe31p&format=png" alt=""></img>`}
+                            
+                        </div>
+                        <p>${video.others.views}</p>
+                        </div>
+                </div>
             </div>
-        </div>
         </div>
     `
         console.log(video)
