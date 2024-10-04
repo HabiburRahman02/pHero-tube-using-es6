@@ -5,13 +5,22 @@ const loadCategories = () => {
         .then(data => displayCategories(data.categories))
 }
 
+// loadCategoryVideo
+function loadCategoryVideo(id){
+    fetch(` https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+        .then(res => res.json())
+        .then(data => displayVideos(data.category))
+}
+
 const displayCategories = (categories) => {
     const categoryContainer = document.getElementById('category-container');
     categories.forEach(category => {
-        const button = document.createElement('button');
-        button.classList = 'btn'
-        button.innerText = category.category
-        categoryContainer.appendChild(button)
+        const buttonContainer = document.createElement('button');
+        console.log(category.category_id)
+       buttonContainer.innerHTML = `
+       <button onclick="loadCategoryVideo(${category.category_id})" class="btn">${category.category}</button>
+       `
+        categoryContainer.appendChild(buttonContainer);
     })
 }
 
@@ -23,8 +32,9 @@ const loadVideos = () => {
 
 const displayVideos = (videos) => {
     const videoContainer = document.getElementById('video-container');
+    videoContainer.textContent = ''
     videos.forEach(video => {
-        console.log('video', video.others.posted_date)
+        // console.log('video', video.others.posted_date.length)
         const div = document.createElement('div');
         div.innerHTML = `
         <div class="card card-compact shadow-xl">
@@ -33,7 +43,7 @@ const displayVideos = (videos) => {
             src="${video.thumbnail}"
             class="h-[230px] w-full object-cover"
             alt="Shoes" />
-            <span class="absolute bg-black text-white px-4 rounded-lg bottom-3 right-3">${getTime(video.others.posted_date)}</span>
+          <span class="absolute bg-black text-white px-4 rounded-lg bottom-3 right-3">${getTime(video.others.posted_date)}</span>
         </figure>
         <div class="card-body">
                 <div class="flex gap-4">
@@ -55,7 +65,6 @@ const displayVideos = (videos) => {
             </div>
         </div>
     `
-        console.log(video)
         videoContainer.appendChild(div)
     })
 }
