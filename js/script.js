@@ -24,15 +24,16 @@ const loadVideos = () => {
 const displayVideos = (videos) => {
     const videoContainer = document.getElementById('video-container');
     videos.forEach(video => {
-        console.log('video', video.authors[0].verified)
+        console.log('video', video.others.posted_date)
         const div = document.createElement('div');
         div.innerHTML = `
         <div class="card card-compact shadow-xl">
-         <figure>
+         <figure class="relative">
             <img
             src="${video.thumbnail}"
             class="h-[230px] w-full object-cover"
             alt="Shoes" />
+            <span class="absolute bg-black text-white px-4 rounded-lg bottom-3 right-3">${getTime(video.others.posted_date)}</span>
         </figure>
         <div class="card-body">
                 <div class="flex gap-4">
@@ -43,9 +44,9 @@ const displayVideos = (videos) => {
                         <h4 class="font-bold text-xl">${video.title}</h4>
                         <div class="flex gap-3">
                             <p class="text-gray-500">${video.authors[0].profile_name}</p>
-                           ${video.authors[0].verified == true && `<img
+                           ${video.authors[0].verified == true ? `<img
                             class="h-5 w-5"
-                            src="https://img.icons8.com/?size=48&id=D9RtvkuOe31p&format=png" alt=""></img>`}
+                            src="https://img.icons8.com/?size=48&id=D9RtvkuOe31p&format=png" alt=""></img>` : ''}
                             
                         </div>
                         <p>${video.others.views}</p>
