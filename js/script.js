@@ -5,20 +5,35 @@ const loadCategories = () => {
         .then(data => displayCategories(data.categories))
 }
 
-// loadCategoryVideo
-function loadCategoryVideo(id){
-    fetch(` https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
-        .then(res => res.json())
-        .then(data => displayVideos(data.category))
+function removeActiveClass(){
+    const buttons = document.getElementsByClassName('btn');
+    for(const button of buttons){
+        console.log(button)
+        button.classList.remove('bg-red-500', 'text-white')
+    }
 }
 
+// loadCategoryVideo
+function loadCategoryVideo(id) {
+    fetch(` https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            removeActiveClass()
+            displayVideos(data.category)
+            const button = document.getElementById(`btn-${id}`);
+            button.classList.add('bg-red-500', 'text-white')
+        })
+}
+// function buttonActive(id){
+//     const button = document.getElementById(`btn-${id}`);
+//     console.logb(but)
+// }
 const displayCategories = (categories) => {
     const categoryContainer = document.getElementById('category-container');
     categories.forEach(category => {
         const buttonContainer = document.createElement('button');
-        console.log(category.category_id)
-       buttonContainer.innerHTML = `
-       <button onclick="loadCategoryVideo(${category.category_id})" class="btn">${category.category}</button>
+        buttonContainer.innerHTML = `
+       <button id="btn-${category.category_id}" onclick="loadCategoryVideo(${category.category_id})" class="btn">${category.category}</button>
        `
         categoryContainer.appendChild(buttonContainer);
     })
@@ -33,6 +48,9 @@ const loadVideos = () => {
 const displayVideos = (videos) => {
     const videoContainer = document.getElementById('video-container');
     videoContainer.textContent = ''
+    if (!videos.length) {
+        videoContainer.innerHTML ='No content here right now'
+    }
     videos.forEach(video => {
         // console.log('video', video.others.posted_date.length)
         const div = document.createElement('div');
